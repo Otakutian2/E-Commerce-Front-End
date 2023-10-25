@@ -42,7 +42,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -54,7 +54,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -66,7 +66,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -78,7 +78,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -90,7 +90,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -102,7 +102,7 @@ const AccountForm = () => {
                     readOnly: true,
                   }}
                   fullWidth={true}
-                  variant="standard"
+                  variant="outlined"
                 />
               </Grid>
 
@@ -113,7 +113,7 @@ const AccountForm = () => {
                   defaultValue={date_created_at}
                   readOnly
                   slotProps={{
-                    textField: { variant: "standard", fullWidth: true },
+                    textField: { variant: "outlined", fullWidth: true },
                   }}
                 />
               </Grid>
