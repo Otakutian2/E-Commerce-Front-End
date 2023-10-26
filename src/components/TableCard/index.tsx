@@ -92,6 +92,11 @@ const TableCard: React.FC<TableCardProps> = ({
     <CardContent
       type={table?.state as TableState}
       onClick={() => {
+        router.push(
+          `${APP_ROUTES.command}/${
+            command ? command.id : `new?tableId=${table?.id}`
+          }`
+        );
       }}
     >
       <Box

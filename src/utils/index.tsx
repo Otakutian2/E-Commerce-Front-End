@@ -1,5 +1,6 @@
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { MutableRefObject } from "react";
+import { outlinedInputClasses } from "@mui/material/OutlinedInput";
 import { createTheme } from "@mui/material";
 import { esES } from "@mui/material/locale";
 import { esES as dataGridEsES } from "@mui/x-data-grid";
@@ -40,7 +41,22 @@ const uploadToCloudinary = async (file: File) => {
   }
 };
 
-const theme = createTheme(
+let theme = createTheme({
+  palette: {
+    background: {
+      default: "rgb(250, 250, 251)",
+    },
+    primary: {
+      dark: "#063FB6",
+      main: "#0D6EFD",
+      light: "#6DB4FE",
+      contrastText: "#FFFFFF",
+    },
+  },
+});
+
+theme = createTheme(
+  theme,
   {
     components: {
       MuiCssBaseline: {
@@ -60,6 +76,18 @@ const theme = createTheme(
             backgroundColor: "#f1f1f1",
           },
         }),
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: "rgba(0, 0, 0, 0.23)",
+            },
+            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+              borderColor: theme.palette.primary.main,
+            },
+          },
+        },
       },
       MuiDialog: {
         defaultProps: {
@@ -97,17 +125,6 @@ const theme = createTheme(
         },
       },
     },
-    palette: {
-      background: {
-        default: "rgb(250, 250, 251)",
-      },
-      primary: {
-        dark: "#063FB6",
-        main: "#0D6EFD",
-        light: "#6DB4FE",
-        contrastText: "#FFFFFF",
-      },
-    },
   },
   esES,
   datePickersEsES,
@@ -134,6 +151,34 @@ const onlyNumber = (e: React.KeyboardEvent<HTMLInputElement>) =>
 
 const onlyDecimal = (e: React.KeyboardEvent<HTMLInputElement>) =>
   validateEntries(e, /^[^Ee+-]+$/);
+
+const removeAccents = (text: string) => {
+  const replacements = {
+    á: "a",
+    é: "e",
+    í: "i",
+    ó: "o",
+    ú: "u",
+    ü: "u",
+    Á: "A",
+    É: "E",
+    Í: "I",
+    Ó: "O",
+    Ú: "U",
+    Ü: "U",
+  };
+
+  const regex = /[áéíóúüÁÉÍÓÚÜ]/g;
+  return text.replace(
+    regex,
+    (letterWithAccent) =>
+      replacements[letterWithAccent as keyof typeof replacements]
+  );
+};
+
+const roundDecimal = (decimal: number) => {
+  return Math.round(decimal * 100) / 100;
+};
 
 const colorsForChart = [
   "rgb(255, 99, 132)",
@@ -165,8 +210,10 @@ export {
   handleLastPageDeletion,
   uploadToCloudinary,
   theme,
+  removeAccents,
   onlyNumber,
   onlyDecimal,
+  roundDecimal,
   colorsForChart,
   colorsWithAlphaForChart,
   ramdonKey,
