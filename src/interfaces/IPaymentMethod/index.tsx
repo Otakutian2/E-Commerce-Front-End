@@ -3,7 +3,7 @@ interface IPaymentMethodPrincipal {
 }
 
 interface IPaymentMethodGet extends IPaymentMethodPrincipal {
-  id: string;
+  id: number;
 }
 
 export type { IPaymentMethodPrincipal, IPaymentMethodGet };

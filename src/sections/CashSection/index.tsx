@@ -12,9 +12,10 @@ import { showForm } from "@/lib/Forms";
 import { fetchAll, getObject } from "@/services/HttpRequests";
 import { IEstablishmentGet } from "@/interfaces/IEstablishment";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const CashSection = () => {
-  let formikRef: FormikProps<ICashPrincipal>;
+  const formikRef = useRef<FormikProps<ICashPrincipal>>(null);
   const { data: cashies, isLoading: isLoadingCashies } = useSWR(
     "api/cash",
     () => fetchAll<ICashGet>("api/cash")
@@ -55,13 +56,13 @@ const CashSection = () => {
               ),
               contentHtml: (
                 <CashAddForm
-                  setFormikRef={(ref) => (formikRef = ref)}
+                  customRef={formikRef}
                   establishment={establishment!}
                 />
               ),
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import ContentBox from "@/components/ContentBox";
 import EmployeeTable from "@/features/Employee/EmployeeTable";
 import EmployeeAddForm from "@/features/Employee/EmployeeAddForm";
@@ -13,9 +12,10 @@ import { IRoleGet } from "@/interfaces/IRole";
 import { fetchAll } from "@/services/HttpRequests";
 import LoaderComponent from "@/components/LoaderComponent";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const EmployeeSection = () => {
-  let formikRef: FormikProps<IEmployeeCreateOrUpdate>;
+  const formikRef = useRef<FormikProps<IEmployeeCreateOrUpdate>>(null);
   const { data: employees, isLoading: isLoadingEmployees } = useSWR(
     "api/employee",
     () => fetchAll<IEmployeeGet>("api/employee")
@@ -54,14 +54,11 @@ const EmployeeSection = () => {
                 />
               ),
               contentHtml: (
-                <EmployeeAddForm
-                  data={roles!}
-                  setFormikRef={(ref) => (formikRef = ref)}
-                />
+                <EmployeeAddForm data={roles!} customRef={formikRef} />
               ),
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

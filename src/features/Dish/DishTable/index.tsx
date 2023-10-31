@@ -23,6 +23,7 @@ import { FormikProps } from "formik/dist/types";
 import { useSWRConfig } from "swr";
 import { ICategoryGet } from "@/interfaces/ICategory";
 import ImageView from "@/components/ImageView";
+import { useRef } from "react";
 
 interface IDishTableProps {
   data: IDishGet[];
@@ -30,7 +31,7 @@ interface IDishTableProps {
 }
 
 const DishTable = ({ data, categories }: IDishTableProps) => {
-  let formikRef: FormikProps<IDishCreateOrUpdate>;
+  const formikRef = useRef<FormikProps<IDishCreateOrUpdate>>(null);
 
   const { mutate } = useSWRConfig();
 
@@ -112,13 +113,13 @@ const DishTable = ({ data, categories }: IDishTableProps) => {
                 contentHtml: (
                   <DishUpdateForm
                     data={categories}
-                    setFormikRef={(ref) => (formikRef = ref)}
+                    customRef={formikRef}
                     values={dish.row}
                   />
                 ),
                 preConfirm: async () => {
-                  await formikRef.submitForm();
-                  if (formikRef && !formikRef.isValid) {
+                  await formikRef.current?.submitForm();
+                  if (formikRef && !formikRef.current?.isValid) {
                     return false;
                   }
                 },

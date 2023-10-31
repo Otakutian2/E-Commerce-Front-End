@@ -28,14 +28,14 @@ interface IEmployeeAddFormProps extends IFormProps<IEmployeeCreateOrUpdate> {
   data: IRoleGet[];
 }
 
-const EmployeeAddForm = ({ setFormikRef, data }: IEmployeeAddFormProps) => {
+const EmployeeAddForm = ({ customRef, data }: IEmployeeAddFormProps) => {
   const { mutate } = useSWRConfig();
 
   return (
     <ThemeProvider theme={theme}>
       <Formik<IEmployeeCreateOrUpdate>
         initialValues={initialValues}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={employeeSchema}
         onSubmit={async (newEmployee) => {

@@ -48,6 +48,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import SetMealIcon from "@mui/icons-material/SetMeal";
 import Typography from "@mui/material/Typography";
 import axiosObject from "@/services/Axios";
+import ReceiptSection from "../ReceiptSection";
 import UserRoles from "@/interfaces/UserRoles";
 
 const CommandDetailsSection = () => {
@@ -55,12 +56,14 @@ const CommandDetailsSection = () => {
   const user = useUserStore((state) => state.user);
   const role = user?.role.name as UserRoles;
   const canManageCommand = role === "Administrador" || role === "Mesero";
+  const canViewCommand =
+    canManageCommand || role == "Cajero" || role == "Cocinero";
 
   if (router.query.id === undefined) return null;
 
   const id = (router.query.id as string).toLowerCase();
 
-  if (!canManageCommand && id === "new") {
+  if ((!canManageCommand && id === "new") || !canViewCommand) {
     router.push(APP_ROUTES.error403);
     return null;
   }
@@ -112,6 +115,8 @@ const CommandDetailsSectionContent = ({
     closeInformationFormDialog,
   ] = useOpenClose(false);
 
+  const [openReceiptForm, openReceiptFormDialog, closeReceiptFormDialog] =
+    useOpenClose(false);
   const [commandDetailsSelected, setCommandDetailsSelected] =
     useState<ICommandDetailsGet | null>(null);
   const [commandDetailsCollection, setCommandDetailsCollection] = useState<
@@ -130,6 +135,7 @@ const CommandDetailsSectionContent = ({
 
   const role = user?.role.name as UserRoles;
   const canManageCommand = role === "Administrador" || role === "Mesero";
+  const canGenerateReceipt = role === "Administrador" || role === "Cajero";
   const canChangeState = role === "Administrador" || role === "Cocinero";
 
   useEffect(() => {
@@ -236,6 +242,11 @@ const CommandDetailsSectionContent = ({
 
       if (res.commandState.name === "Pagado") {
         showCommmandNotFoundAndRedirect();
+        return;
+      }
+
+      if (res.commandState.name === "Generado" && role === "Cajero") {
+        router.push(APP_ROUTES.error403);
         return;
       }
 
@@ -446,6 +457,14 @@ const CommandDetailsSectionContent = ({
             commandDetails={commandDetailsSelected}
           />
 
+          {canGenerateReceipt && (
+            <ReceiptSection
+              commandId={command?.id}
+              open={openReceiptForm}
+              close={closeReceiptFormDialog}
+              commandDetailsCollection={commandDetailsCollection}
+            />
+          )}
 
           <Box sx={{ marginTop: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
             {canManageCommand && (
@@ -500,6 +519,29 @@ const CommandDetailsSectionContent = ({
                       Servir Plato
                     </Button>
                   )}
+
+                {command?.commandState.name === "Preparado" &&
+                  canGenerateReceipt && (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={<PointOfSaleIcon />}
+                      onClick={() => {
+                        if (change) {
+                          showWarningMessage({
+                            title:
+                              "Se ha detectado cambios, debes guardar la comanda antes de facturarla",
+                          });
+                          return;
+                        }
+                        openReceiptFormDialog();
+                      }}
+                      disabled={loading}
+                    >
+                      Facturar
+                    </Button>
+                  )}
+
                 {canManageCommand && (
                   <Button
                     variant="contained"

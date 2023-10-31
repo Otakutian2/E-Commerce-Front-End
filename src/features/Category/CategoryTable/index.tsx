@@ -18,14 +18,14 @@ import { showForm } from "@/lib/Forms";
 import { showErrorMessage, showSuccessToastMessage } from "@/lib/Messages";
 import { FormikProps } from "formik/dist/types";
 import { useSWRConfig } from "swr";
+import { useRef } from "react";
 
 interface ICategoryTableProps {
   data: ICategoryGet[];
 }
 
 const CategoryTable = ({ data }: ICategoryTableProps) => {
-  let formikRef: FormikProps<ICategoryPrincipal>;
-
+  const formikRef = useRef<FormikProps<ICategoryPrincipal>>(null);
   const { mutate } = useSWRConfig();
 
   const gridApiRef = useGridApiRef();
@@ -67,13 +67,13 @@ const CategoryTable = ({ data }: ICategoryTableProps) => {
                 ),
                 contentHtml: (
                   <CategoryUpdateForm
-                    setFormikRef={(ref) => (formikRef = ref)}
+                    customRef={formikRef}
                     values={category.row}
                   />
                 ),
                 preConfirm: async () => {
-                  await formikRef.submitForm();
-                  if (formikRef && !formikRef.isValid) {
+                  await formikRef.current?.submitForm();
+                  if (formikRef && !formikRef.current?.isValid) {
                     return false;
                   }
                 },

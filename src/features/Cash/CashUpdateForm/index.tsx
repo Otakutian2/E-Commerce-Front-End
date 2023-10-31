@@ -12,7 +12,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { showSuccessToastMessage } from "@/lib/Messages";
 
 const CashUpdateForm = ({
-  setFormikRef,
+  customRef,
   values: cash,
 }: IUpdateFormProps<ICashPrincipal, ICashGet>) => {
   const { mutate } = useSWRConfig();
@@ -23,7 +23,7 @@ const CashUpdateForm = ({
         initialValues={{
           establishmentId: cash.establishment.id,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={cashSchema}
         onSubmit={async (cashUpdate) => {

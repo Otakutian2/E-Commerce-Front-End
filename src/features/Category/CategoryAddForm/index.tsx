@@ -16,14 +16,14 @@ const initialValues: ICategoryPrincipal = {
   name: "",
 };
 
-const CategoryAddForm = ({ setFormikRef }: IFormProps<ICategoryPrincipal>) => {
+const CategoryAddForm = ({ customRef }: IFormProps<ICategoryPrincipal>) => {
   const { mutate } = useSWRConfig();
 
   return (
     <ThemeProvider theme={theme}>
       <Formik<ICategoryPrincipal>
         initialValues={initialValues}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={categorySchema}
         onSubmit={async (newCategory) => {

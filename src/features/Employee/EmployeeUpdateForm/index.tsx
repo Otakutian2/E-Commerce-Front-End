@@ -23,7 +23,7 @@ interface IEmployeeUpdateFormProps
 
 const EmployeeUpdateForm = ({
   values: employee,
-  setFormikRef,
+  customRef,
   data,
   isUserInSession,
   refreshUser,
@@ -41,7 +41,7 @@ const EmployeeUpdateForm = ({
           roleId: employee.role.id,
           user: employee.user,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={employeeSchema}
         onSubmit={async (employeeUpdate) => {

@@ -16,7 +16,7 @@ interface ICashAddFormProps extends IFormProps<ICashPrincipal> {
   establishment: IEstablishmentGet;
 }
 
-const CashAddForm = ({ setFormikRef, establishment }: ICashAddFormProps) => {
+const CashAddForm = ({ customRef, establishment }: ICashAddFormProps) => {
   const { mutate } = useSWRConfig();
 
   return (
@@ -25,7 +25,7 @@ const CashAddForm = ({ setFormikRef, establishment }: ICashAddFormProps) => {
         initialValues={{
           establishmentId: establishment.id,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={cashSchema}
         onSubmit={async (newCash) => {

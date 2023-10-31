@@ -1,14 +1,14 @@
 import { APP_ROUTES } from "@/routes";
-import { useAuthStore } from "@/store/auth";
 import axios, { AxiosError } from "axios";
 import https from "https";
+import Router from "next/router";
 
 const agent = new https.Agent({
   rejectUnauthorized: false,
 });
 
 const axiosObject = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "https://localhost:7208",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
     "Content-Type": "application/json",
     accept: "application/json",
@@ -38,9 +38,9 @@ axiosObject.interceptors.response.use(
     if (error.request.status === 401) {
       localStorage.removeItem("access_token");
 
-      /* if (Router.pathname !== APP_ROUTES.login) {
+      if (Router.pathname !== APP_ROUTES.login) {
         window.location.href = APP_ROUTES.login;
-      } */
+      }
     }
 
     return Promise.reject(error);

@@ -16,7 +16,7 @@ import { showSuccessToastMessage } from "@/lib/Messages";
 import { AxiosError } from "axios";
 
 const PaymentMethodUpdateForm = ({
-  setFormikRef,
+  customRef,
   values,
 }: IUpdateFormProps<IPaymentMethodPrincipal, IPaymentMethodGet>) => {
   const { mutate } = useSWRConfig();
@@ -27,7 +27,7 @@ const PaymentMethodUpdateForm = ({
         initialValues={{
           ...values,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={paymentMethodSchema}
         onSubmit={async (paymentMethodUpdate) => {

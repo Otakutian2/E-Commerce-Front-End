@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import establishmentSchema from "@/schemas/Establishment";
 import {
@@ -44,9 +45,13 @@ const EstablishmentUpdateForm = ({
   });
 
   return (
-    <Grid item sx={{ paddingY: 1 }} xs={12} sm>
+    <Box sx={{ paddingY: 1 }}>
       <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ justifyContent: { sx: "start", sm: "end" } }}
+        >
           <Grid item xs={12} sm={6}>
             <TextField
               id="name"
@@ -105,23 +110,21 @@ const EstablishmentUpdateForm = ({
             />
           </Grid>
 
-          <Grid item container xs={12} justifyContent={"end"}>
-            <Grid item xs={12} sm={6}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                disabled={formik.isSubmitting}
-                onClick={() => formik.handleSubmit()}
-                fullWidth
-              >
-                Actualizar
-              </Button>
-            </Grid>
+          <Grid item container xs={12} sm={"auto"}>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              disabled={formik.isSubmitting}
+              onClick={() => formik.handleSubmit()}
+              fullWidth
+            >
+              Actualizar
+            </Button>
           </Grid>
         </Grid>
       </form>
-    </Grid>
+    </Box>
   );
 };
 

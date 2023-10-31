@@ -20,7 +20,7 @@ const initialValues: IPaymentMethodPrincipal = {
 };
 
 const PaymentMethodAddForm = ({
-  setFormikRef,
+  customRef,
 }: IFormProps<IPaymentMethodPrincipal>) => {
   const { mutate } = useSWRConfig();
 
@@ -28,7 +28,7 @@ const PaymentMethodAddForm = ({
     <ThemeProvider theme={theme}>
       <Formik<IPaymentMethodPrincipal>
         initialValues={initialValues}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={paymentMethodSchema}
         onSubmit={async (newPaymentMethod) => {

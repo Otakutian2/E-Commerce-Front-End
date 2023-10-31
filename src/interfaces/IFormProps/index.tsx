@@ -1,7 +1,7 @@
 import { FormikProps } from "formik/dist/types";
 
 interface IFormProps<T> {
-  setFormikRef: (ref: FormikProps<T>) => void;
+  customRef: React.RefObject<FormikProps<T>>;
 }
 
 interface IUpdateFormProps<T, O> extends IFormProps<T> {

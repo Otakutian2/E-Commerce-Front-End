@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import ContentBox from "@/components/ContentBox";
 import AddCard from "@mui/icons-material/AddCard";
 import PaymentMethodTable from "@/features/PaymentMethod/PaymentMethodTable";
@@ -15,9 +14,10 @@ import { FormikProps } from "formik/dist/types";
 import { showForm } from "@/lib/Forms";
 import { fetchAll } from "@/services/HttpRequests";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const PaymentMethodSection = () => {
-  let formikRef: FormikProps<IPaymentMethodPrincipal>;
+  const formikRef = useRef<FormikProps<IPaymentMethodPrincipal>>(null);
   const { data, isLoading } = useSWR("api/PaymentMethod", () =>
     fetchAll<IPaymentMethodGet>("api/PaymentMethod")
   );
@@ -50,14 +50,10 @@ const PaymentMethodSection = () => {
                   color="primary"
                 />
               ),
-              contentHtml: (
-                <PaymentMethodAddForm
-                  setFormikRef={(ref) => (formikRef = ref)}
-                />
-              ),
+              contentHtml: <PaymentMethodAddForm customRef={formikRef} />,
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

@@ -11,9 +11,10 @@ import { showForm } from "@/lib/Forms";
 import { fetchAll } from "@/services/HttpRequests";
 import LoaderComponent from "@/components/LoaderComponent";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const CategorySection = () => {
-  let formikRef: FormikProps<ICategoryPrincipal>;
+  const formikRef = useRef<FormikProps<ICategoryPrincipal>>(null);
   const { data, isLoading } = useSWR("api/category", () =>
     fetchAll<ICategoryGet>("api/category")
   );
@@ -46,12 +47,10 @@ const CategorySection = () => {
                   color="primary"
                 />
               ),
-              contentHtml: (
-                <CategoryAddForm setFormikRef={(ref) => (formikRef = ref)} />
-              ),
+              contentHtml: <CategoryAddForm customRef={formikRef} />,
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

@@ -13,7 +13,7 @@ import { showSuccessToastMessage } from "@/lib/Messages";
 import { AxiosError } from "axios";
 
 const CategoryUpdateForm = ({
-  setFormikRef,
+  customRef,
   values,
 }: IUpdateFormProps<ICategoryPrincipal, ICategoryGet>) => {
   const { mutate } = useSWRConfig();
@@ -24,7 +24,7 @@ const CategoryUpdateForm = ({
         initialValues={{
           ...values,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={categorySchema}
         onSubmit={async (categoryUpdate) => {

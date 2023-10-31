@@ -27,7 +27,7 @@ interface IDishAddFormProps extends IFormProps<IDishCreateOrUpdate> {
   data: ICategoryGet[];
 }
 
-const DishAddForm = ({ setFormikRef, data }: IDishAddFormProps) => {
+const DishAddForm = ({ customRef, data }: IDishAddFormProps) => {
   const theme = useTheme();
   const { mutate } = useSWRConfig();
   const [file, setFile] = useState<File | null>(null);
@@ -36,7 +36,7 @@ const DishAddForm = ({ setFormikRef, data }: IDishAddFormProps) => {
     <ThemeProvider theme={theme}>
       <Formik<IDishCreateOrUpdate>
         initialValues={initialValues}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={dishSchema}
         onSubmit={async (newDish) => {
@@ -117,7 +117,9 @@ const DishAddForm = ({ setFormikRef, data }: IDishAddFormProps) => {
                   value={values.price}
                   onChange={handleChange}
                   onKeyDown={onlyDecimal}
-                  InputProps={{ componentsProps: { input: { min: 0 } } }}
+                  InputProps={{
+                    componentsProps: { input: { min: 0, step: "any" } },
+                  }}
                   helperText={errors.price}
                   disabled={isSubmitting}
                   fullWidth

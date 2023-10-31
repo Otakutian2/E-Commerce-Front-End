@@ -52,11 +52,9 @@ const CommandSection = () => {
   );
   const router = useRouter();
   const user = useUserStore((state) => state.user);
-  const entity = (["Administrador", "Mesero"] as UserRoles[]).includes(
-    user?.role.name as UserRoles
-  )
-    ? "mesas y comandas"
-    : "comandas";
+  const role = user?.role.name as UserRoles;
+  const canManageCommand = role === "Administrador" || role === "Mesero";
+  const entity = canManageCommand ? "mesas y comandas" : "comandas";
   const [collection, setCollection] = useState<
     ITableWithCommand[] | undefined
   >();
@@ -190,16 +188,18 @@ const CommandSection = () => {
           />
         </Box>
 
-        <Button
-          variant="contained"
-          sx={{ mb: 2 }}
-          color="primary"
-          onClick={() => {
-            router.push(`${APP_ROUTES.command}/new`);
-          }}
-        >
-          Pedido para llevar
-        </Button>
+        {canManageCommand && (
+          <Button
+            variant="contained"
+            sx={{ mb: 2 }}
+            color="primary"
+            onClick={() => {
+              router.push(`${APP_ROUTES.command}/new`);
+            }}
+          >
+            Pedido para llevar
+          </Button>
+        )}
 
         <Box
           sx={{

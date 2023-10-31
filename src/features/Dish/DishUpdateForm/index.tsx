@@ -23,7 +23,7 @@ interface IDishUpdateFormProps
 }
 
 const DishUpdateForm = ({
-  setFormikRef,
+  customRef,
   values: dish,
   data,
 }: IDishUpdateFormProps) => {
@@ -39,7 +39,7 @@ const DishUpdateForm = ({
           price: dish.price,
           categoryId: dish.category.id,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={dishSchema}
         onSubmit={async (dishUpdate) => {

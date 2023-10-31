@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import ContentBox from "@/components/ContentBox";
 import EstablishmentUpdateForm from "@/features/Establishment/EstablishmentUpdateForm";
 import useSWR from "swr";

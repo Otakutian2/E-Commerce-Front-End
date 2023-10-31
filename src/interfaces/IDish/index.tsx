@@ -19,7 +19,7 @@ interface IDishOrderStatistics {
   dishId: string;
   name: string;
   image: string;
-  CategoryName: string;
+  category: string;
   totalSales: number;
   quantityOfDishesSold: number;
 }

@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import ContentBox from "@/components/ContentBox";
 import Table from "@/features/Table/Table";
 import TableBar from "@mui/icons-material/TableBar";
@@ -12,9 +11,10 @@ import { FormikProps } from "formik/dist/types";
 import { showForm } from "@/lib/Forms";
 import { fetchAll } from "@/services/HttpRequests";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const TableSection = () => {
-  let formikRef: FormikProps<ITablePrincipal>;
+  const formikRef = useRef<FormikProps<ITablePrincipal>>(null);
   const { data, isLoading } = useSWR("api/Table", () =>
     fetchAll<ITableGet>("api/Table")
   );
@@ -47,12 +47,10 @@ const TableSection = () => {
                   color="primary"
                 />
               ),
-              contentHtml: (
-                <TableAddForm setFormikRef={(ref) => (formikRef = ref)} />
-              ),
+              contentHtml: <TableAddForm customRef={formikRef} />,
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

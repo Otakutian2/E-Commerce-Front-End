@@ -14,14 +14,14 @@ const initialValues: ITablePrincipal = {
   seatCount: 1,
 };
 
-const TableAddForm = ({ setFormikRef }: IFormProps<ITablePrincipal>) => {
+const TableAddForm = ({ customRef }: IFormProps<ITablePrincipal>) => {
   const { mutate } = useSWRConfig();
 
   return (
     <ThemeProvider theme={theme}>
       <Formik<ITablePrincipal>
         initialValues={initialValues}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={tableCreateSchema}
         onSubmit={async (newTable) => {

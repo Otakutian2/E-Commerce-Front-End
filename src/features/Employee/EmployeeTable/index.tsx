@@ -22,6 +22,7 @@ import { showErrorMessage, showSuccessToastMessage } from "@/lib/Messages";
 import { FormikProps } from "formik";
 import { IRoleGet } from "@/interfaces/IRole";
 import { useUserStore } from "@/store/user";
+import { useRef } from "react";
 
 interface IEmpoyeeTableProps {
   data: IEmployeeGet[];
@@ -29,7 +30,7 @@ interface IEmpoyeeTableProps {
 }
 
 const EmployeeTable = ({ data, roles }: IEmpoyeeTableProps) => {
-  let formikRef: FormikProps<IEmployeeCreateOrUpdate>;
+  const formikRef = useRef<FormikProps<IEmployeeCreateOrUpdate>>(null);
   const user = useUserStore((state) => state.user);
   const fetchUser = useUserStore((state) => state.fetchUser);
 
@@ -107,7 +108,7 @@ const EmployeeTable = ({ data, roles }: IEmpoyeeTableProps) => {
                 ),
                 contentHtml: (
                   <EmployeeUpdateForm
-                    setFormikRef={(ref) => (formikRef = ref)}
+                    customRef={formikRef}
                     values={employee.row}
                     data={roles}
                     isUserInSession={user?.id === employee.row.id}
@@ -117,8 +118,8 @@ const EmployeeTable = ({ data, roles }: IEmpoyeeTableProps) => {
                   />
                 ),
                 preConfirm: async () => {
-                  await formikRef.submitForm();
-                  if (formikRef && !formikRef.isValid) {
+                  await formikRef.current?.submitForm();
+                  if (formikRef && !formikRef.current?.isValid) {
                     return false;
                   }
                 },

@@ -5,14 +5,14 @@ import { ITableGet, ITableUpdate } from "@/interfaces/ITable";
 import { IUpdateFormProps } from "@/interfaces/IFormProps";
 import { useSWRConfig } from "swr";
 import { updateObject } from "@/services/HttpRequests";
-import { tableUpdateSchema } from "@/schemas/Table";
+import { tableUpdateSchema } from "@/schemas";
 import { Formik } from "formik";
 import { onlyNumber, theme } from "@/utils";
 import { ThemeProvider } from "@mui/material/styles";
 import { showSuccessToastMessage } from "@/lib/Messages";
 
 const TableUpdateForm = ({
-  setFormikRef,
+  customRef,
   values,
 }: IUpdateFormProps<ITableUpdate, ITableGet>) => {
   const { mutate } = useSWRConfig();
@@ -24,7 +24,7 @@ const TableUpdateForm = ({
           seatCount: values.seatCount,
           state: Object.values(TypeTableState).find((v) => v === values.state)!,
         }}
-        innerRef={(ref) => setFormikRef(ref!)}
+        innerRef={customRef}
         validateOnChange={false}
         validationSchema={tableUpdateSchema}
         onSubmit={async (tableUpdate) => {

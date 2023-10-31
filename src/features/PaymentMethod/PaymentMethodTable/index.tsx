@@ -21,13 +21,14 @@ import { showForm } from "@/lib/Forms";
 import { showErrorMessage, showSuccessToastMessage } from "@/lib/Messages";
 import { FormikProps } from "formik/dist/types";
 import { useSWRConfig } from "swr";
+import { useRef } from "react";
 
 interface IPaymentMethodTableProps {
   data: IPaymentMethodGet[];
 }
 
 const PaymentMethodTable = ({ data }: IPaymentMethodTableProps) => {
-  let formikRef: FormikProps<IPaymentMethodPrincipal>;
+  const formikRef = useRef<FormikProps<IPaymentMethodPrincipal>>(null);
 
   const { mutate } = useSWRConfig();
 
@@ -75,13 +76,13 @@ const PaymentMethodTable = ({ data }: IPaymentMethodTableProps) => {
                 ),
                 contentHtml: (
                   <PaymentMethodUpdateForm
-                    setFormikRef={(ref) => (formikRef = ref)}
+                    customRef={formikRef}
                     values={paymentMethod.row}
                   />
                 ),
                 preConfirm: async () => {
-                  await formikRef.submitForm();
-                  if (formikRef && !formikRef.isValid) {
+                  await formikRef.current?.submitForm();
+                  if (formikRef && !formikRef.current?.isValid) {
                     return false;
                   }
                 },

@@ -25,6 +25,7 @@ import {
 } from "@/lib/Messages";
 import { FormikProps } from "formik/dist/types";
 import { useSWRConfig } from "swr";
+import { useRef } from "react";
 
 interface ITableProps {
   data: ITableGet[];
@@ -36,7 +37,7 @@ const statusMap = {
 };
 
 const Table = ({ data }: ITableProps) => {
-  let formikRef: FormikProps<ITableUpdate>;
+  const formikRef = useRef<FormikProps<ITableUpdate>>(null);
 
   const { mutate } = useSWRConfig();
 
@@ -117,15 +118,11 @@ const Table = ({ data }: ITableProps) => {
                   />
                 ),
                 contentHtml: (
-                  <TableUpdateForm
-                    setFormikRef={(ref) => (formikRef = ref)}
-                    values={table.row}
-                  />
+                  <TableUpdateForm customRef={formikRef} values={table.row} />
                 ),
                 preConfirm: async () => {
-                  console.log(formikRef.values);
-                  await formikRef.submitForm();
-                  if (formikRef && !formikRef.isValid) {
+                  await formikRef.current?.submitForm();
+                  if (formikRef && !formikRef.current?.isValid) {
                     return false;
                   }
                 },

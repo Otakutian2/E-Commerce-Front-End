@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import ContentBox from "@/components/ContentBox";
 import DishTable from "@/features/Dish/DishTable";
 import ButtonAdd from "@/components/ButtonAdd";
@@ -13,9 +12,10 @@ import { showForm } from "@/lib/Forms";
 import { fetchAll } from "@/services/HttpRequests";
 import { ICategoryGet } from "@/interfaces/ICategory";
 import Title from "@/components/Title";
+import { useRef } from "react";
 
 const DishSection = () => {
-  let formikRef: FormikProps<IDishCreateOrUpdate>;
+  const formikRef = useRef<FormikProps<IDishCreateOrUpdate>>(null);
   const { data: dishes, isLoading: isLoadingDishes } = useSWR("api/dish", () =>
     fetchAll<IDishGet>("api/dish")
   );
@@ -54,14 +54,11 @@ const DishSection = () => {
                 />
               ),
               contentHtml: (
-                <DishAddForm
-                  data={categories!}
-                  setFormikRef={(ref) => (formikRef = ref)}
-                />
+                <DishAddForm data={categories!} customRef={formikRef} />
               ),
               preConfirm: async () => {
-                await formikRef.submitForm();
-                if (formikRef && !formikRef.isValid) {
+                await formikRef.current?.submitForm();
+                if (formikRef && !formikRef.current?.isValid) {
                   return false;
                 }
               },

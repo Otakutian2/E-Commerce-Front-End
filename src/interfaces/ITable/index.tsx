@@ -1,5 +1,5 @@
 import { TypeTableState } from "@/enum";
-import { ICommandForTable } from "../ICommand/ICommand";
+import { ICommandForTable } from "../ICommand";
 
 interface ITablePrincipal {
   seatCount: number;
