@@ -18,5 +18,6 @@ export type { default as ISignInResponse } from "./ISignInResponse";
 export type { default as ISignIn } from "./ISignIn";
 export * from "./ITable";
 export * from "./IUser";
+export * from "./IReceiptReport";
 export * from "./IReceiptType";
 export type { default as UserRoles } from "./UserRoles";
