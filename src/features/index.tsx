@@ -3,6 +3,7 @@ export * from "./Category";
 export * from "./Employee";
 export * from "./Establishment";
 export * from "./PaymentMethod";
+export * from "./SalesReport";
 export * from "./Table";
 export * from "./Dish";
 export * from "./ReceiptReport";
